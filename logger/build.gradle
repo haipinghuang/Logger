@@ -1,9 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+version = "1.0.0"
 
 android {
+
     compileSdkVersion 26
     buildToolsVersion "27.0.0"
-
 
     defaultConfig {
         minSdkVersion 11
@@ -21,10 +25,90 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    lintOptions{
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
 }
+
+def siteUrl = 'https://github.com/haipinghuang/Logger'   // 项目的主页
+def gitUrl = 'https://github.com/haipinghuang/Logger.git'   // Git仓库的url
+group = "com.hai.mylog"            // Maven Group ID for the artifact，一般填你唯一的包名
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name 'a android log library copied form https://github.com/orhanobut/logger, but is more simple ,pretty and powerful than original'     //项目的描述 你可以多写一点
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'com.hai'        //填写的一些基本信息
+                        name 'huanghai'
+                        email '1132760021@qq.com'
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding = "UTF-8"
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"
+        name = "logger"    //发布到JCenter上的项目名字
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+
+//publish {
+//    userOrg = 'hyman'//bintray.com用户名
+//    groupId = 'com.hai'//jcenter上的路径
+//    artifactId = 'logger'//项目名称
+//    publishVersion = '1.0.0'//版本号
+//    desc = 'a android log library copied form https://github.com/orhanobut/logger, but is more simple ,pretty and powerful than original'
+//    website = 'https://github.com/haipinghuang/Logger'//网站，不重要；尽量模拟github上的地址
+//}
+

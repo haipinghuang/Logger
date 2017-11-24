@@ -23,7 +23,7 @@ import static com.hai.mylog.Logger.VERBOSE;
 import static com.hai.mylog.Logger.WARN;
 
 /**
- * priority > INFO时，包含一些app信息 和手机系统信息
+ * priority 大于INFO时，包含一些app信息 和手机系统信息
  * Created by 黄海 on 2017/11/22.
  */
 
