@@ -55,7 +55,7 @@ public final class Logger {
     }
 
     public static void d(Throwable tr) {
-        printer.d(null, null, tr);
+        printer.d(tr);
     }
 
     public static void i(String msg) {
@@ -71,7 +71,7 @@ public final class Logger {
     }
 
     public static void i(Throwable tr) {
-        printer.i(null, null, tr);
+        printer.i(tr);
     }
 
     public static void w(String tag, String msg, Throwable tr) {
@@ -91,7 +91,7 @@ public final class Logger {
     }
 
     public static void e(Throwable tr) {
-        printer.e(null, null, tr);
+        printer.e(tr);
     }
 
     public static void wtf(String msg) {
@@ -107,7 +107,7 @@ public final class Logger {
     }
 
     public static void wtf(Throwable tr) {
-        printer.wtf(null, null, tr);
+        printer.wtf(tr);
     }
 
     /**
